@@ -13,11 +13,11 @@ router.put('/products/:id', ProductController.update);
 router.delete('/products/:id', ProductController.delete);
 
 router.post('/stock', StockMovementController.create);
-router.get('/report/movements', StockMovementController.reportMovements);
 // router.get('/stock/most-moved', StockMovementController.mostMoved);
 
-router.get('/stock-value', StockReportController.totalStockValue);
-router.get('/items-sold', StockReportController.totalItemsSold);
-router.get('/top-moved-products', StockReportController.topMovedProducts);
+router.get('/report/movements', StockMovementController.reportMovements);
+router.get('/report/stock-value', StockReportController.totalStockValue);
+router.get('/report/items-sold', StockReportController.totalItemsSold);
+router.get('/report/top-moved-products', StockReportController.topMovedProducts);
 
 export default router;
