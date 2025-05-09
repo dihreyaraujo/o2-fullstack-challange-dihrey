@@ -16,8 +16,8 @@ router.post('/stock', StockMovementController.create);
 // router.get('/stock/most-moved', StockMovementController.mostMoved);
 
 router.get('/report/movements', StockMovementController.reportMovements);
-router.get('/report/stock-value', StockReportController.totalStockValue);
-router.get('/report/items-sold', StockReportController.totalItemsSold);
+router.get('/report/total-stock-value', StockReportController.totalStockValue);
+router.get('/report/total-items-sold', StockReportController.totalItemsSold);
 router.get('/report/top-moved-products', StockReportController.topMovedProducts);
 
 export default router;
