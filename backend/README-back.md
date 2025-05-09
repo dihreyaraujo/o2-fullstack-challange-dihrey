@@ -45,12 +45,12 @@ A aplicação estará rodando em: `http://localhost:3001`
 }
 ```
 
---
+---
 
 #### 🔹 Listar todos os produtos
 **GET** `/products`
 
---
+---
 
 #### 🔹 Atualizar um produto
 **PUT** `/products/:id`
@@ -63,7 +63,7 @@ A aplicação estará rodando em: `http://localhost:3001`
 }
 ```
 
---
+---
 
 #### 🔹 Deletar um produto
 **DELETE** `/products/:id`
@@ -92,17 +92,17 @@ A aplicação estará rodando em: `http://localhost:3001`
 #### 🔹 Movimentações por período
 **GET** `/report/movements?start=2025-05-01&end=2025-05-09`
 
---
+---
 
 #### 🔹 Valor total em estoque
 **GET** `/report/total-stock-value`
 
---
+---
 
 #### 🔹 Quantidade total vendida (saídas)
 **GET** `/report/total-items-sold`
 
---
+---
 
 #### 🔹 Produtos mais movimentados
 **GET** `/report/top-moved-products?limit=5`
