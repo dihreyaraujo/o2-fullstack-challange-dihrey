@@ -1,7 +1,6 @@
-// backend/src/repositories/StockReportRepository.ts
 import { Product } from '../models/Product';
 import { StockMovement } from '../models/StockMovement';
-import { Op, fn, col, literal } from 'sequelize';
+import { fn, col, literal } from 'sequelize';
 
 export default class StockReportRepository {
   static async getTotalStockValue() {
@@ -31,7 +30,7 @@ export default class StockReportRepository {
         [fn('SUM', col('quantity')), 'totalMoved']
       ],
       group: ['productId'],
-      order: [[fn('SUM', col('quantity')), 'DESC']], // Corrigido aqui
+      order: [[fn('SUM', col('quantity')), 'DESC']],
       limit,
       raw: true,
     }) as unknown as { productId: string, totalMoved: string }[];

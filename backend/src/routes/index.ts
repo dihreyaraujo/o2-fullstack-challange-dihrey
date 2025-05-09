@@ -1,4 +1,3 @@
-// backend/src/routes/index.ts
 import { Router } from 'express';
 import { ProductController } from '../controllers/ProductController';
 import { StockMovementController } from '../controllers/StockMovementController';
@@ -13,7 +12,6 @@ router.put('/products/:id', ProductController.update);
 router.delete('/products/:id', ProductController.delete);
 
 router.post('/stock', StockMovementController.create);
-// router.get('/stock/most-moved', StockMovementController.mostMoved);
 
 router.get('/report/movements', StockMovementController.reportMovements);
 router.get('/report/total-stock-value', StockReportController.totalStockValue);

@@ -18,9 +18,4 @@ export const StockMovementController = {
     const data = await service.getByPeriod(new Date(start as string), new Date(end as string));
     res.json(data);
   }
-
-  // async mostMoved(req: Request, res: Response) {
-  //   const data = await service.getMostMovedProducts();
-  //   res.json(data);
-  // }
 };

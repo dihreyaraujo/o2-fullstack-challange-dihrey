@@ -1,5 +1,4 @@
 import { StockMovement } from '../models/StockMovement';
-import { sequelize } from '../config/database';
 import { Op } from 'sequelize';
 
 export class StockMovementRepository {
@@ -16,13 +15,4 @@ export class StockMovementRepository {
       },
     });
   }
-
-  // async findMostMovedProducts() {
-  //   return await StockMovement.findAll({
-  //     attributes: ['productId', [sequelize.fn('COUNT', 'productId'), 'count']],
-  //     group: ['productId'],
-  //     order: [[sequelize.literal('count'), 'DESC']],
-  //     limit: 5,
-  //   });
-  // }
 }

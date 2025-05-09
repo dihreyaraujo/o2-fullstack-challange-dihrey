@@ -1,4 +1,3 @@
-// backend/src/models/StockMovement.ts
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/database';
 import { Product } from './Product';

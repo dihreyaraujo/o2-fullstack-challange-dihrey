@@ -1,6 +1,5 @@
 import { StockMovementRepository } from '../repositories/StockMovementRepository';
 import { ProductRepository } from '../repositories/ProductRepository';
-import { Product } from '../models/Product';
 
 export class StockMovementService {
   constructor(
@@ -27,8 +26,4 @@ export class StockMovementService {
   getByPeriod(startDate: Date, endDate: Date) {
     return this.movementRepo.findByPeriod(startDate, endDate);
   }
-
-  // getMostMovedProducts() {
-  //   return this.movementRepo.findMostMovedProducts();
-  // }
 }

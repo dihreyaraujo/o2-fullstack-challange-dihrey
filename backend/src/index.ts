@@ -16,8 +16,8 @@ const PORT = process.env.PORT || 3001;
 
 const startServer = async () => {
   try {
-    await createDatabaseIfNotExists(); // ✅ Cria o banco se não existir
-    await sequelize.sync({ alter: true }); // 🔄 Sincroniza models
+    await createDatabaseIfNotExists();
+    await sequelize.sync({ alter: true });
     console.log('🟢 Banco sincronizado!');
     
     app.listen(PORT, () => {
