@@ -16,7 +16,12 @@ export const fetchTopMovedProducts = async (limit = 5): Promise<TopMovedProduct[
   return res.data;
 };
 
-export const fetchSalesByPeriod = async (start: string, end: string) => {
-  const res = await api.get(`/report/movements?start=${start}&end=${end}`);
-  return res.data; // [{ date, quantity, type }]
+export const fetchSalesByPeriod = async (start?: string, end?: string) => {
+  if (!start || !end) {
+    const resAll = await api.get(`/report/movements`);
+    return resAll.data;
+  } else {
+    const res = await api.get(`/report/movements?start=${start}&end=${end}`);
+    return res.data;
+  }
 };

@@ -15,4 +15,8 @@ export class StockMovementRepository {
       },
     });
   }
+
+  async findAll() {
+    return await StockMovement.findAll();
+  }
 }

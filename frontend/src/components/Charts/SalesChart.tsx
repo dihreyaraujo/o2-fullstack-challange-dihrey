@@ -15,12 +15,13 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 interface Props {
   labels: string[];
   data: number[];
+  title: string;  // Recebendo o título dinâmico
 }
 
-export default function SalesChart({ labels, data }: Props) {
+export default function SalesChart({ labels, data, title }: Props) {
   return (
     <div style={{ background: 'white', padding: '16px', borderRadius: '8px', width: '50vw' }}>
-      <h2>Vendas por Período</h2>
+      <h2>{title}</h2> {/* Exibindo o título dinâmico */}
       <Line
         data={{
           labels,

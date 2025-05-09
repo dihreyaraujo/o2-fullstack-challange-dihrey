@@ -25,6 +25,10 @@ StockMovement.init({
   date: {
     type: DataTypes.DATE,
     allowNull: false,
+  },
+  value: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
   }
 
 }, {

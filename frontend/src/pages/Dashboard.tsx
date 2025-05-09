@@ -11,16 +11,31 @@ import '../styles/Dashboard.css';
 
 export default function Dashboard() {
   const [totalStockValue, setTotalStockValue] = useState(0);
+  const [allTotalStockValue, setAllTotalStockValue] = useState(0);
   const [totalItemsSold, setTotalItemsSold] = useState(0);
   const [topProducts, setTopProducts] = useState<TopMovedProduct[]>([]);
   const [salesData, setSalesData] = useState<{ date: string; total: number }[]>([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [mode, setMode] = useState<'sales' | 'movements'>('sales');
+  const [chartTitle, setChartTitle] = useState('Vendas por Período');
 
   useEffect(() => {
-    fetchTotalStockValue().then(setTotalStockValue);
+    fetchTotalStockValue().then(totalValue => {
+      setTotalStockValue(totalValue);
+      fetchSalesByPeriod().then(movements => {
+        const allOutType = movements.filter((move: any) => move.type === 'saida');
+        const sumAllOutType = allOutType.reduce((acc: number, moveOut: any) => acc + Number(moveOut.value), 0);
+        setAllTotalStockValue(Number(sumAllOutType) + Number(totalValue));
+      });
+    });
     fetchTotalItemsSold().then(setTotalItemsSold);
     fetchTopMovedProducts(5).then(setTopProducts);
+    fetchSalesByPeriod().then(movements => {
+      const allOutType = movements.filter((move: any) => move.type === 'saida');
+      const sumAllOutType = allOutType.reduce((acc: number, moveOut: any) => acc + Number(moveOut.value), 0);
+      setAllTotalStockValue(Number(sumAllOutType) + Number(totalStockValue));
+    });
 
     const now = new Date();
     const defaultStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
@@ -29,20 +44,20 @@ export default function Dashboard() {
     setStartDate(defaultStart);
     setEndDate(defaultEnd);
 
-    fetchSales(defaultStart, defaultEnd);
+    fetchData(defaultStart, defaultEnd, mode);
   }, []);
 
-  const fetchSales = (start: string, end: string) => {
+  const fetchData = (start: string, end: string, currentMode: 'sales' | 'movements') => {
     fetchSalesByPeriod(start, end).then(movements => {
-      const soldByDate: Record<string, number> = {};
+      const dataByDate: Record<string, number> = {};
 
       movements
-        .filter((m: any) => m.type === 'saida')
+        .filter((m: any) => currentMode === 'sales' ? m.type === 'saida' : true)
         .forEach((m: any) => {
-          soldByDate[m.date] = (soldByDate[m.date] || 0) + m.quantity;
+          dataByDate[m.date] = (dataByDate[m.date] || 0) + m.quantity;
         });
 
-      const result = Object.entries(soldByDate).map(([date, total]) => ({
+      const result = Object.entries(dataByDate).map(([date, total]) => ({
         date,
         total,
       }));
@@ -53,9 +68,23 @@ export default function Dashboard() {
 
   const handleSearch = () => {
     if (startDate && endDate) {
-      fetchSales(startDate, endDate);
+      fetchData(startDate, endDate, mode);
     }
   };
+
+  const handleModeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedMode = event.target.value as 'sales' | 'movements';
+    setMode(selectedMode);
+    setChartTitle(selectedMode === 'sales' ? 'Vendas por Período' : 'Movimentações por Período');
+  };
+
+  function formatarNumeroBrasileiro(valor: number): string {
+  return valor.toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
 
   return (
     <div>
@@ -79,7 +108,20 @@ export default function Dashboard() {
                 onChange={(e) => setEndDate(e.target.value)}
               />
             </label>
-            <button onClick={handleSearch}>Buscar</button>
+
+            <label className="select-container">
+              Tipo:
+              <select
+                value={mode}
+                onChange={handleModeChange}
+                className="styled-select"
+              >
+                <option value="sales">Vendas por período</option>
+                <option value="movements">Movimentações por período</option>
+              </select>
+            </label>
+
+            <button className="search-button" onClick={handleSearch}>Buscar</button>
           </div>
 
           <div className="chart-container">
@@ -89,6 +131,7 @@ export default function Dashboard() {
                 return date.toLocaleDateString('pt-BR');
               })}
               data={salesData.map(d => d.total)}
+              title={chartTitle}
             />
           </div>
         </div>
@@ -97,7 +140,11 @@ export default function Dashboard() {
           <div className="summary">
             <div className="card">
               <h2>Valor Total em Estoque</h2>
-              <p>R$ {totalStockValue.toFixed(2)}</p>
+              <p>R$ {formatarNumeroBrasileiro(Number(totalStockValue.toFixed(2)))}</p>
+            </div>
+            <div className="card">
+              <h2>Valor Total do <br />Estoque</h2>
+              <p>R$ {formatarNumeroBrasileiro(Number(allTotalStockValue.toFixed(2)))}</p>
             </div>
             <div className="card">
               <h2>Total de Itens Vendidos</h2>
@@ -111,7 +158,7 @@ export default function Dashboard() {
                 <span className="index-circle">{index + 1}</span>
                 <div className="product-info">
                   <strong>{p.name}</strong>
-                  <span>{p.totalMoved} movimentações</span>
+                  <span>{p.totalMoved} {p.totalMoved === 1 ? 'movimentação' : 'movimentações'}</span>
                 </div>
               </li>
             ))}

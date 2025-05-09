@@ -20,10 +20,14 @@ export class StockMovementService {
       await product.update({ quantity: product.quantity - qty });
     }
 
-    return await this.movementRepo.create(data);
+    return await this.movementRepo.create({...data, value: product.price * qty });
   }
 
   getByPeriod(startDate: Date, endDate: Date) {
     return this.movementRepo.findByPeriod(startDate, endDate);
+  }
+
+  getAll() {
+    return this.movementRepo.findAll();
   }
 }

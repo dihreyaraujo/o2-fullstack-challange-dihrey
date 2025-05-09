@@ -15,7 +15,12 @@ export const StockMovementController = {
 
   async reportMovements(req: Request, res: Response) {
     const { start, end } = req.query;
-    const data = await service.getByPeriod(new Date(start as string), new Date(end as string));
-    res.json(data);
+    if (!start || !end) {
+      const dataAll = await service.getAll();
+      res.status(200).json(dataAll);
+    } else {
+      const data = await service.getByPeriod(new Date(start as string), new Date(end as string));
+      res.status(200).json(data);
+    }
   }
 };
