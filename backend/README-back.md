@@ -34,10 +34,14 @@ A aplicação estará rodando em: `http://localhost:3001`
 #### 🔹 Criar produto
 **POST** `/products`
 ```json
+//Exemplo de requisição
+
 {
-  "name": "Mouse Logitech",
-  "quantity": 10,
-  "unitPrice": 199.99
+  "name": "Mouse Gamer",
+  "description": "Mouse com RGB e 3200 DPI",
+  "quantity": 20,
+  "price": 150.00,
+  "category": "Periféricos"
 }
 ```
 
@@ -47,10 +51,11 @@ A aplicação estará rodando em: `http://localhost:3001`
 #### 🔹 Atualizar um produto
 **PUT** `/products/:id`
 ```json
+//Exemplo de requisição
+
 {
   "name": "Mouse Gamer Logitech",
   "quantity": 20,
-  "unitPrice": 229.99
 }
 ```
 
@@ -64,10 +69,13 @@ A aplicação estará rodando em: `http://localhost:3001`
 #### 🔹 Registrar movimentação
 **POST** `/stock`
 ```json
+//Exemplo de requisição
+
 {
   "productId": "uuid-do-produto",
-  "type": "entrada", // ou "saida"
-  "quantity": 5
+  "type": "saida", // ou "entrada"
+  "quantity": 2,
+  "date": "2025-05-08"
 }
 ```
 
