@@ -2,6 +2,8 @@
 
 ### 🚀 Como iniciar o projeto
 
+⚠️ O projeto está rodando com o PostgreSQL
+
 1. **Instale as dependências**
 ```bash
 npm install
