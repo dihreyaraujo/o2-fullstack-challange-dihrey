@@ -45,7 +45,7 @@ export default function Dashboard() {
     setEndDate(defaultEnd);
 
     fetchData(defaultStart, defaultEnd, mode);
-  }, []);
+  }, [mode, totalStockValue]);
 
   const fetchData = (start: string, end: string, currentMode: 'sales' | 'movements') => {
     fetchSalesByPeriod(start, end).then(movements => {
@@ -79,11 +79,11 @@ export default function Dashboard() {
   };
 
   function formatarNumeroBrasileiro(valor: number): string {
-  return valor.toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-}
+    return valor.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
 
 
   return (

@@ -1,8 +1,8 @@
 export interface StockMovement {
-  id: string;
+  id?: string;
   productId: string;
   quantity: number;
-  type: 'entrada' | 'saida';
+  type: string;
   date: string;
 }
 
@@ -11,3 +11,13 @@ export interface TopMovedProduct {
   name: string;
   totalMoved: number;
 }
+
+export interface Product {
+  id?: string;
+  name: string;
+  description: string;
+  quantity: number;
+  price: number;
+  category: string;
+}
+
