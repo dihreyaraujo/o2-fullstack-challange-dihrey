@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   fetchTotalItemsSold,
   fetchTotalStockValue,
@@ -19,6 +20,8 @@ export default function Dashboard() {
   const [endDate, setEndDate] = useState('');
   const [mode, setMode] = useState<'sales' | 'movements'>('sales');
   const [chartTitle, setChartTitle] = useState('Vendas por Período');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchTotalStockValue().then(totalValue => {
@@ -85,10 +88,16 @@ export default function Dashboard() {
     });
   }
 
-
   return (
     <div>
-      <h1 className='titleDashboard'>Dashboard</h1>
+      <div className="dashboard-header">
+        <h1 className='titleDashboard'>Dashboard</h1>
+        <div className="nav-buttons">
+          <button onClick={() => navigate('/products')}>Ir para Produtos 🛒</button>
+          <button onClick={() => navigate('/movements')}>Ir para Movimentações 📦</button>
+        </div>
+      </div>
+
       <div className="dashboard">
         <div>
           <div className="date-filter">

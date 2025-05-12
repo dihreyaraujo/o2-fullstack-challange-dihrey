@@ -45,6 +45,10 @@ const MovementsPage: React.FC = () => {
 
   return (
     <div className="movement-container">
+      <div className="nav-buttons">
+        <button onClick={() => window.location.href = '/'}>Dashboard</button>
+        <button onClick={() => window.location.href = '/products'}>Produtos</button>
+      </div>
       <h1 className="movement-title">Movimentações de Estoque</h1>
       <button className="movement-add-button" onClick={openModal}>
         Nova Movimentação
@@ -52,7 +56,7 @@ const MovementsPage: React.FC = () => {
       <div className="movement-grid">
         {movements.map((m) => (
           <div key={m.id} className="movement-card">
-            <h2>{products.find((p) => p.id === m.productId)!.name}</h2>
+            <h2>{m.productId}</h2>
             <p><strong>Tipo:</strong> {m.type}</p>
             <p><strong>Quantidade:</strong> {m.quantity}</p>
             <p><strong>Data:</strong> {new Date(m.date).toLocaleString()}</p>

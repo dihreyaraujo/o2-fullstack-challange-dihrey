@@ -93,6 +93,10 @@ const ProductPage: React.FC = () => {
 
   return (
     <div className="product-container">
+      <div className="nav-buttons">
+        <button onClick={() => window.location.href = '/'}>Dashboard</button>
+        <button onClick={() => window.location.href = '/movements'}>Movimentações</button>
+      </div>
       <h1 className="product-title">Gerenciar Produtos</h1>
       <div className="product-grid">
         {products.map((product) => (
