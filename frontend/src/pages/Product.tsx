@@ -96,6 +96,7 @@ const ProductPage: React.FC = () => {
       <div className="nav-buttons">
         <button onClick={() => window.location.href = '/'}>Dashboard</button>
         <button onClick={() => window.location.href = '/movements'}>Movimentações</button>
+        <button onClick={() => window.location.href = '/agent'}>Agente IA</button>
       </div>
       <h1 className="product-title">Gerenciar Produtos</h1>
       <div className="product-grid">

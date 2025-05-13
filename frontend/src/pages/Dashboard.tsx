@@ -95,6 +95,7 @@ export default function Dashboard() {
         <div className="nav-buttons">
           <button onClick={() => navigate('/products')}>Ir para Produtos 🛒</button>
           <button onClick={() => navigate('/movements')}>Ir para Movimentações 📦</button>
+          <button onClick={() => navigate('/agent')}>Ir para Agente IA 🤖</button>
         </div>
       </div>
 

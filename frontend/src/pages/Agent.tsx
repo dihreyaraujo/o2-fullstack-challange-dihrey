@@ -29,6 +29,11 @@ export default function Agent() {
 
   return (
     <div className="agent-container">
+      <div className="nav-buttons">
+        <button onClick={() => window.location.href = '/'}>Dashboard</button>
+        <button onClick={() => window.location.href = '/products'}>Produtos</button>
+        <button onClick={() => window.location.href = '/movements'}>Movimentações</button>
+      </div>
       <h2>Agente de IA</h2>
       <form onSubmit={handleSubmit} className="agent-form">
         <input

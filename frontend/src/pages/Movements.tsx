@@ -48,6 +48,7 @@ const MovementsPage: React.FC = () => {
       <div className="nav-buttons">
         <button onClick={() => window.location.href = '/'}>Dashboard</button>
         <button onClick={() => window.location.href = '/products'}>Produtos</button>
+        <button onClick={() => window.location.href = '/agent'}>Agente IA</button>
       </div>
       <h1 className="movement-title">Movimentações de Estoque</h1>
       <button className="movement-add-button" onClick={openModal}>
