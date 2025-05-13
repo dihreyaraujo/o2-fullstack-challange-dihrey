@@ -36,6 +36,9 @@ Regras:
 - Nunca responda com JSON.
 - Sempre use o comando [CALL_API: ...] para indicar a chamada ao backend.
 - Datas podem ser informadas de maneira natural como "10/05/2025", "1 de maio de 2025", "maio 1", etc. Converta para o padrão "AAAA-MM-DD" antes de gerar os comandos.
+- Se não houver movimentações de saída, informe "Nenhuma movimentação de saída no período."
+- Nunca mostre ao usuário que você está chamando uma API ou que está processando dados. Apenas forneça a resposta final.
+- Não invente dados ou produtos. Use apenas os dados retornados pela API.
 `;
 
 app.post('/api/ask', async (req: Request, res: Response) => {
@@ -56,7 +59,7 @@ app.post('/api/ask', async (req: Request, res: Response) => {
     const rawAnswer = response.data.response;
 
     const apiMatch = rawAnswer.match(/\[CALL_API:\s*(.+?)\]/);
-    const bodyMatch = rawAnswer.match(/\{[\s\S]*\}/); // JSON se houver
+    const bodyMatch = rawAnswer.match(/\{[\s\S]*\}/);
 
     let finalAnswer = rawAnswer;
 
@@ -70,7 +73,8 @@ app.post('/api/ask', async (req: Request, res: Response) => {
         finalAnswer = rawAnswer.replace(apiMatch[0], `\n✅ Registro salvo com sucesso.`);
       } else {
         const apiResponse = await axios.get(fullUrl);
-        const formattedData = formatMovements(apiResponse.data);
+        const productsMap = await fetchProductsMap();
+        const formattedData = formatMovements(apiResponse.data, productsMap);
         finalAnswer = rawAnswer.replace(apiMatch[0], `\n✅ ${formattedData}`);
       }
     }
@@ -82,18 +86,35 @@ app.post('/api/ask', async (req: Request, res: Response) => {
   }
 });
 
+// 🔎 Busca os produtos e retorna um map de { [id]: name }
+async function fetchProductsMap(): Promise<Record<string, string>> {
+  try {
+    const response = await axios.get(`${BASE_BACKEND_URL}/products`);
+    const products = response.data;
+
+    return products.reduce((map: Record<string, string>, product: any) => {
+      map[product.id] = product.name;
+      return map;
+    }, {});
+  } catch (err) {
+    console.error('Erro ao buscar produtos:', err);
+    return {};
+  }
+}
+
 // 🔎 Formata resposta de movimentações (apenas saídas)
-function formatMovements(data: any): string {
+function formatMovements(data: any, productsMap: Record<string, string>): string {
   if (!Array.isArray(data)) return 'Nenhuma movimentação encontrada.';
 
-  const saidas = data.filter(item => item.type === 'saida');
+  const saidas = data.filter((item) => item.type === 'saida');
 
   if (saidas.length === 0) return 'Nenhuma movimentação de saída no período.';
 
   return saidas
     .map((item) => {
       const dataFormatada = new Date(item.date).toLocaleDateString('pt-BR');
-      return `O produto ${item.productId} vendeu ${item.quantity} unidade(s) na data ${dataFormatada} pelo valor de R$ ${Number(item.value).toFixed(2)}.`;
+      const nomeProduto = productsMap[item.productId] || item.productId;
+      return `O produto ${nomeProduto} vendeu ${item.quantity} unidade(s) na data ${dataFormatada} pelo valor de R$ ${Number(item.value).toFixed(2)}.`;
     })
     .join('\n');
 }
